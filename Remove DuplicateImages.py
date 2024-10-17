@@ -27,31 +27,31 @@ Sorted = []
 skip = False;
 
 ##List all files in Images Directory
-Images = os.listdir("Images")
-print(Images)
+Images = os.listdir("../Images")
+#print(Images)
+
 
 for y in range(len(Images)):
     ##open base image
-    img1 = cv.imread("Images/"+Images[y], cv.IMREAD_GRAYSCALE)
+    img1 = cv.imread("../Images/"+Images[y], cv.IMREAD_GRAYSCALE)
 
-    ##Store copy of Image y in original array if its not already in the duplicate array
-    #if Images[y] not in Duplicates:
-    #   Sorted.append(Images[y])
-    
+    ##For every element in Duplicate array, check if Image Y is already in there
+    ItemInDuplicates = False;
+    for z in Duplicates:
+       ## Check if Image Y is already in elemnt Z of Duplicates
+       if Images[y] in z:
+          ItemInDuplicates = True;
+          
+    #If Image y is not in duplicate array already, add it to the Sorted Array
+    if ItemInDuplicates == False:
+       Sorted.append(Images[y])
+
     for x in range(y+1,len(Images)):
-        #Check if image is being compared agaisnt self
-        if Images[y] != Images[x]:
+        #Check if image is being compared agaisnt self and that item hasn't already been found to be in duplicates
+        if Images[y] != Images[x] and ItemInDuplicates != True:
             #open Comparison image
-            img2 = cv.imread("Images/"+Images[x], cv.IMREAD_GRAYSCALE)
+            img2 = cv.imread("../Images/"+Images[x], cv.IMREAD_GRAYSCALE)
             
-            #Check if image is already in Duplicate list, if so skip comparison
-            skip = False
-            for z in Duplicates:
-                if Images[x] in z:
-                    skip = True
-                    
-            #Add Image to the seperate sorted list, but it must include the first version of a duplicate image it comes across
-
             ######compare Images########
             if skip == False:
                 #Check if Image size/shapes are same
@@ -66,16 +66,18 @@ for y in range(len(Images)):
                     #plt.imshow(img2)
                     #plt.show()
                     
-                    cv.waitKey(0)
-                    cv.destroyAllWindows()
+                    #cv.waitKey(0)
+                    #cv.destroyAllWindows()
                     #Append to duplicate list to update jagged array
                     if error < 1:
                        Duplicates.append([Images[y],Images[x]])
                 #else:
                 #    print("No Match")
 
-print(Duplicates)
-print(len(Duplicates))
+
+
+#print(Duplicates)
+#print(len(Duplicates))
 
 print(Sorted)
 print(len(Sorted))
